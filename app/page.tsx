@@ -1,62 +1,85 @@
+'use client'
+
 import Image from 'next/image'
+import MenuItem from '@/components/MenuItem'
+import { useCallback, useEffect, useState } from 'react'
 
 export default function Home() {
-	return (
-		<div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-			<main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-				<Image className="dark:invert" src="/next.svg" alt="Next.js logo" width={180} height={38} priority />
-				<ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-					<li className="mb-2 tracking-[-.01em]">
-						Get started by editing{' '}
-						<code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">app/page.tsx</code>.
-					</li>
-					<li className="tracking-[-.01em]">Save and see your changes instantly.</li>
-				</ol>
+	const [activeMenuItem, setActiveMenuItem] = useState<string>('Search')
 
-				<div className="flex gap-4 items-center flex-col sm:flex-row">
-					<a
-						className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-						href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-						target="_blank"
-						rel="noopener noreferrer">
-						<Image className="dark:invert" src="/vercel.svg" alt="Vercel logomark" width={20} height={20} />
-						Deploy now
-					</a>
-					<a
-						className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-						href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-						target="_blank"
-						rel="noopener noreferrer">
-						Read our docs
-					</a>
+	// TODO: move the following two code blocks to the left nav menu component in the future
+	// This will override the default browser behavior with the custom search shortcut(CMD/CTRL + f)
+	const handleSearchShortcutKeyPress = useCallback((event: KeyboardEvent) => {
+		if ((event.metaKey || event.ctrlKey) && event.key === 'f') {
+			event.preventDefault()
+			setActiveMenuItem('Search')
+		}
+	}, [])
+
+	// Listen to the keydown event for the search shortcut
+	useEffect(() => {
+		document.addEventListener('keydown', handleSearchShortcutKeyPress)
+
+		return () => document.removeEventListener('keydown', handleSearchShortcutKeyPress)
+	}, [handleSearchShortcutKeyPress])
+
+	return (
+		<div className="w-full h-full flex bg-[#141718]">
+			{/*Sidebar*/}
+			<div className="w-1/5 h-full flex flex-col">
+				{/*	Logo*/}
+				<div className="w-full h-fit flex justify-between items-center px-6 py-10">
+					<div className="w-fit h-fit flex justify-start items-center gap-2">
+						<Image src="/images/logo-light.svg" alt="Light logo" width={194} height={48} preload={true} />
+					</div>
+					<button className="cursor-pointer">
+						<Image src="/icons/collapse-icon.svg" alt="Collapse" width={24} height={24} preload={false} className="hover:bg-neutral-1" />
+					</button>
 				</div>
-			</main>
-			<footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-				<a
-					className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-					href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-					target="_blank"
-					rel="noopener noreferrer">
-					<Image aria-hidden src="/file.svg" alt="File icon" width={16} height={16} />
-					Learn
-				</a>
-				<a
-					className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-					href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-					target="_blank"
-					rel="noopener noreferrer">
-					<Image aria-hidden src="/window.svg" alt="Window icon" width={16} height={16} />
-					Examples
-				</a>
-				<a
-					className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-					href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-					target="_blank"
-					rel="noopener noreferrer">
-					<Image aria-hidden src="/globe.svg" alt="Globe icon" width={16} height={16} />
-					Go to nextjs.org →
-				</a>
-			</footer>
+
+				{/*	Main menus*/}
+				<div className="w-full h-fit p-4">
+					<MenuItem
+						iconPath="/icons/chat-icon.svg"
+						label="Chats"
+						activeLinearGradient="from-[#323337] to-[#464F6F50]"
+						active={activeMenuItem === 'Chats'}
+						onClick={() => setActiveMenuItem('Chats')}
+					/>
+					<MenuItem
+						iconPath="/icons/search-icon.svg"
+						label="Search"
+						shortcut="⌘ F"
+						activeLinearGradient="from-[#32373596] to-[#466F6D50]"
+						active={activeMenuItem === 'Search'}
+						onClick={() => setActiveMenuItem('Search')}
+					/>
+					<MenuItem
+						iconPath="/icons/bank-card-checkout-icon.svg"
+						label="Manage subscription"
+						activeLinearGradient="from-[#302C3980] to-[#51466F90]"
+						active={activeMenuItem === 'Manage subscription'}
+						onClick={() => setActiveMenuItem('Manage subscription')}
+					/>
+					<MenuItem
+						iconPath="/icons/barcode-icon.svg"
+						label="Updates & FAQ"
+						activeLinearGradient="from-[#373332] to-[#6F4E4650]"
+						active={activeMenuItem === 'Updates & FAQ'}
+						onClick={() => setActiveMenuItem('Updates & FAQ')}
+					/>
+					<MenuItem
+						iconPath="/icons/settings-icon.svg"
+						label="Settings"
+						activeLinearGradient="from-[#302C3980] to-[#4A466F50]"
+						active={activeMenuItem === 'Settings'}
+						onClick={() => setActiveMenuItem('Settings')}
+					/>
+				</div>
+			</div>
+			<div className="w-4/5 h-full py-6 pr-6">
+				<div className="w-full h-full bg-[#FEFEFE] rounded-xl p-4"></div>
+			</div>
 		</div>
 	)
 }

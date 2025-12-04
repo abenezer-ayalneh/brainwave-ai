@@ -1,26 +1,75 @@
 @import 'tailwindcss';
 
-:root {
-	--background: #ffffff;
-	--foreground: #171717;
+@theme {
+    /*Colors*/
+    --color-primary: #0084FF;
+    --color-secondary: #3FDD78;
+    --color-accent-amber: #DDA73F;
+    --color-accent-purple: #8C6584;
+    --color-accent-blue: #3E90F0;
+    --color-accent-red: #D84C10;
+    --color-accent-violet: #8E55EA;
+    --color-neutral-1: #FEFEFE;
+    --color-neutral-2: #F3F5F7;
+    --color-neutral-3: #E8ECEF;
+    --color-neutral-4: #6C7275;
+    --color-neutral-5: #343839;
+    --color-neutral-6: #232627;
+    --color-neutral-7: #141718;
 }
 
-@theme inline {
-	--color-background: var(--background);
-	--color-foreground: var(--foreground);
-	--font-sans: var(--font-geist-sans);
-	--font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-	:root {
-		--background: #0a0a0a;
-		--foreground: #ededed;
-	}
+* {
+    @apply transition-colors duration-300 ease-in-out;
 }
 
 body {
-	background: var(--background);
-	color: var(--foreground);
-	font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Inter', sans-serif;
+}
+
+.headline-1 {
+    @apply text-6xl leading-[72px];
+}
+
+.headline-2 {
+    @apply text-5xl leading-14;
+}
+
+.headline-3 {
+    @apply text-[40px] leading-12;
+}
+
+.headline-4 {
+    @apply text-[28px] leading-10;
+}
+
+.headline-5 {
+    @apply text-2xl leading-10;
+}
+
+.headline-6 {
+    @apply text-lg leading-8;
+}
+
+.body-1 {
+    @apply text-2xl leading-9;
+}
+
+.body-2 {
+    @apply text-[17px] leading-6;
+}
+
+.base-1 {
+    @apply text-[16px] leading-6;
+}
+
+.base-2 {
+    @apply text-sm leading-6;
+}
+
+.caption-1 {
+    @apply text-xs leading-5;
+}
+
+.caption-2 {
+    @apply text-[11px] leading-4;
 }
